@@ -1,8 +1,7 @@
 # timetable-solver Project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+This project is an experiment to see how to combine optaplanner, quarkus and aws lambda.
+The solver will be compiled to native and deployed as custom runtime lambda on AWS.
 
 ## Running the application in dev mode
 
