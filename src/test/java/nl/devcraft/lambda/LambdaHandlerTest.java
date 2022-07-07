@@ -41,24 +41,24 @@ public class LambdaHandlerTest {
         var lessonList = response.jsonPath().getList("lessonList");
         assertAll(
                 () -> assertEquals(lessonList.size(), 10),
-                () -> assertEquals(lessonList.get(0).toString(), "{id=101, subject=Math, teacher=B. May, studentGroup=9th grade, timeslot={dayOfWeek=MONDAY, startTime=08:30:00, endTime=09:30:00}, room={name=Room A}}"),
-                () -> assertEquals(lessonList.get(1).toString(), "{id=102, subject=Physics, teacher=M. Curie, studentGroup=9th grade, timeslot={dayOfWeek=MONDAY, startTime=09:30:00, endTime=10:30:00}, room={name=Room A}}"),
-                () -> assertEquals(lessonList.get(2).toString(), "{id=103, subject=Geography, teacher=M. Polo, studentGroup=9th grade, timeslot={dayOfWeek=MONDAY, startTime=10:30:00, endTime=11:30:00}, room={name=Room A}}")
+                () -> assertEquals("{id=101, subject=Math, teacher=B. May, studentGroup=9th grade, timeslot={id=1, dayOfWeek=MONDAY, startTime=08:30:00, endTime=09:30:00}, room={id=3, name=Room C}}", lessonList.get(0).toString()),
+                () -> assertEquals("{id=102, subject=Physics, teacher=M. Curie, studentGroup=9th grade, timeslot={id=2, dayOfWeek=MONDAY, startTime=09:30:00, endTime=10:30:00}, room={id=2, name=Room B}}", lessonList.get(1).toString()),
+                () -> assertEquals("{id=103, subject=Geography, teacher=M. Polo, studentGroup=9th grade, timeslot={id=3, dayOfWeek=MONDAY, startTime=10:30:00, endTime=11:30:00}, room={id=2, name=Room B}}", lessonList.get(2).toString())
         );
     }
 
     private TimeTable generateProblem() {
         List<Timeslot> timeslotList = new ArrayList<>();
-        timeslotList.add(new Timeslot(DayOfWeek.MONDAY, LocalTime.of(8, 30), LocalTime.of(9, 30)));
-        timeslotList.add(new Timeslot(DayOfWeek.MONDAY, LocalTime.of(9, 30), LocalTime.of(10, 30)));
-        timeslotList.add(new Timeslot(DayOfWeek.MONDAY, LocalTime.of(10, 30), LocalTime.of(11, 30)));
-        timeslotList.add(new Timeslot(DayOfWeek.MONDAY, LocalTime.of(13, 30), LocalTime.of(14, 30)));
-        timeslotList.add(new Timeslot(DayOfWeek.MONDAY, LocalTime.of(14, 30), LocalTime.of(15, 30)));
+        timeslotList.add(new Timeslot(1L, DayOfWeek.MONDAY, LocalTime.of(8, 30), LocalTime.of(9, 30)));
+        timeslotList.add(new Timeslot(2L, DayOfWeek.MONDAY, LocalTime.of(9, 30), LocalTime.of(10, 30)));
+        timeslotList.add(new Timeslot(3L, DayOfWeek.MONDAY, LocalTime.of(10, 30), LocalTime.of(11, 30)));
+        timeslotList.add(new Timeslot(4L, DayOfWeek.MONDAY, LocalTime.of(13, 30), LocalTime.of(14, 30)));
+        timeslotList.add(new Timeslot(5L, DayOfWeek.MONDAY, LocalTime.of(14, 30), LocalTime.of(15, 30)));
 
         List<Room> roomList = new ArrayList<>();
-        roomList.add(new Room("Room A"));
-        roomList.add(new Room("Room B"));
-        roomList.add(new Room("Room C"));
+        roomList.add(new Room(1L,"Room A"));
+        roomList.add(new Room(2L,"Room B"));
+        roomList.add(new Room(3L,"Room C"));
 
         List<Lesson> lessonList = new ArrayList<>();
         lessonList.add(new Lesson(101L, "Math", "B. May", "9th grade"));
