@@ -1,0 +1,45 @@
+name: GraalVM Native Image builds
+on:
+  push:
+    branches: [ main, deploy ]
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  build:
+    name: Build timetable-solver lambda function
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and run timetable-solver
+        run: |
+              ./mvnw package -Pnative
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: timetable-solver-function
+          path: target/function.zip
+  deploy:
+    name: Deploy
+    needs: build
+    if: ${{ github.ref == 'ref/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: timetable-solver-function
+          path: target/function.zip
+      - name: Deploy function code
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+             ./update.sh
