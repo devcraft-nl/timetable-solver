@@ -1,7 +1,7 @@
 name: GraalVM Native Image builds
 on:
   push:
-    branches: [ main ]
+    branches: [ main, deploy ]
   pull_request:
     types: [ opened, reopened, synchronize ]
 
@@ -10,7 +10,7 @@ jobs:
     name: Build timetable-solver lambda function
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: graalvm/setup-graalvm@v1
         with:
           version: 'latest'
@@ -25,3 +25,11 @@ jobs:
         with:
           name: timetable-solver-function
           path: target/function.zip
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - name: Deploy function to aws
+        if: ${{ github.ref == 'ref/heads/deploy' }}
+        run: ./update.sh
