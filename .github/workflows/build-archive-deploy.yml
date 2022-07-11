@@ -21,7 +21,7 @@ jobs:
         run: |
               ./mvnw package -Pnative
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: timetable-solver-function
           path: target/function.zip
