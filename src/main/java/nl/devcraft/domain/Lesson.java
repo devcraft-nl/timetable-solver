@@ -10,6 +10,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Getter
 public class Lesson {
 
